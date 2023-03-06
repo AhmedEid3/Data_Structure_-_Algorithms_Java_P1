@@ -5,7 +5,7 @@ public class Stack {
     private int count;
 
     public Stack() {
-        items = new int[1];
+        items = new int[8];
     }
 
     public void push(int item) {
