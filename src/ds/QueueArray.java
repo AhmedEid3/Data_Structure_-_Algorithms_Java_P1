@@ -2,15 +2,14 @@ package ds;
 
 import java.util.Arrays;
 
-public class ArrayQueue {
-
-    private int[] items;
+public class QueueArray {
+    private int[] queue;
     private int count = 0;
     private int front = 0;
     private int rear = 0;
 
-    public ArrayQueue(int capacity) {
-        items = new int[capacity];
+    public QueueArray(int capacity) {
+        queue = new int[capacity];
     }
 
     public boolean isEmpty() {
@@ -18,23 +17,23 @@ public class ArrayQueue {
     }
 
     public boolean isFull() {
-        return count == items.length;
+        return count == queue.length;
     }
 
     public void enqueue(int item) {
-        if (isFull()) throw new IllegalStateException("Queue is full");
+        if (isFull()) throw new IllegalArgumentException("Queue is full");
 
-        items[rear] = item;
-        rear = (rear + 1) % items.length;
+        queue[rear] = item;
+        rear = (rear + 1) % queue.length;
         count++;
     }
 
     public int dequeue() {
         if (isEmpty()) throw new IllegalStateException("Queue is empty");
 
-        var item = items[front];
-        items[front] = 0;
-        front = (front + 1) % items.length;
+        var item = queue[front];
+        queue[front] = 0;
+        front = (front + 1) % queue.length;
         count--;
 
         return item;
@@ -43,12 +42,12 @@ public class ArrayQueue {
     public int peek() {
         if (isEmpty()) throw new IllegalStateException("Queue is empty");
 
-        return items[front];
+        return queue[front];
     }
 
     @Override()
     public String toString() {
-        return Arrays.toString(items);
+        return Arrays.toString(queue);
     }
 
 }

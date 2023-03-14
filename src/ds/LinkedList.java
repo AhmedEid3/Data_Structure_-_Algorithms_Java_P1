@@ -48,11 +48,6 @@ public class LinkedList {
         size++;
     }
 
-    public void clear() {
-        head = tail = null;
-        size = 0;
-    }
-
     public int getFirst() {
         if (isEmpty()) throw new NoSuchElementException();
 
@@ -82,30 +77,60 @@ public class LinkedList {
         return false;
     }
 
-    public void removeFirst() {
+    public int removeFirst() {
         if (isEmpty()) throw new NoSuchElementException();
-        else if (head == tail) {
+        int value = head.value;
+
+        if (head == tail) {
             clear();
-            return;
+            return value;
         } else {
             var secondNode = head.next;
             head.next = null;
             head = secondNode;
         }
         size--;
+
+        return value;
     }
 
-    public void removeLast() {
+    public int removeLast() {
         if (isEmpty()) throw new NoSuchElementException();
-        else if (head == tail) {
+        int value = tail.value;
+
+        if (head == tail) {
             clear();
-            return;
+            return value;
         } else {
             var previousNode = getPreviousNode(tail);
             tail = previousNode;
             tail.next = null;
         }
         size--;
+
+        return value;
+    }
+
+    public int remove(int value) {
+        // Validations
+        if (isEmpty()) throw new IllegalStateException("List is empty");
+
+        var removeNode = get(value);
+        if (removeNode == null) throw new IllegalStateException("item not found");
+
+        if (head == tail) clear();
+        else if (removeNode == head) removeFirst();
+        else if (removeNode == tail) removeLast();
+        else {
+            var prevNode = getPreviousNode(removeNode);
+            var nextNode = removeNode.next;
+
+            prevNode.next = nextNode;
+            removeNode.next = null;
+            size--;
+        }
+
+        return removeNode.value;
     }
 
     public void reverse() {
@@ -149,7 +174,7 @@ public class LinkedList {
 
 
     }
-    
+
     public int[] toArray() {
         int[] array = new int[size];
 
@@ -185,4 +210,24 @@ public class LinkedList {
 
         return null;
     }
+
+    private Node get(int value) {
+        if (isEmpty()) throw new IllegalStateException("List is empty");
+
+        if (head == tail && head.value == value) return head;
+
+        var currentNode = head;
+        while (currentNode != tail) {
+            if (currentNode.value == value) return currentNode;
+            currentNode = currentNode.next;
+        }
+
+        return null;
+    }
+
+    private void clear() {
+        head = tail = null;
+        size = 0;
+    }
+
 }
