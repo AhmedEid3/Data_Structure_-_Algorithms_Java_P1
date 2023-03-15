@@ -1,10 +1,10 @@
 package ds;
 
-public class QueueLinkedList {
-    private LinkedList<Integer> queue;
+public class QueueLinkedList<T> {
+    private LinkedList<T> queue;
 
     public QueueLinkedList() {
-        queue = new LinkedList();
+        queue = new LinkedList<T>();
     }
 
     public boolean isEmpty() {
@@ -15,17 +15,17 @@ public class QueueLinkedList {
         return queue.size();
     }
 
-    public void enqueue(int value) {
+    public void enqueue(T value) {
         queue.addLast(value);
     }
 
-    public int dequeue() {
+    public T dequeue() {
         if (isEmpty()) throw new IllegalStateException("Queue is empty");
 
         return queue.removeFirst();
     }
 
-    public int peek() {
+    public T peek() {
         if (isEmpty()) throw new IllegalStateException("Queue is empty");
 
         return queue.getFirst();
@@ -33,7 +33,7 @@ public class QueueLinkedList {
 
     @Override
     public String toString() {
-        return "Queue: " + queue;
+        return queue.toString();
     }
 
 }
