@@ -1,25 +1,25 @@
 package ds;
 
-public class StackLinkedList {
-    private LinkedList<Integer> stack;
+public class StackLinkedList<T> {
+    private LinkedList<T> stack;
 
     public StackLinkedList() {
-        this.stack = new LinkedList();
+        this.stack = new LinkedList<T>();
     }
 
     public boolean isEmpty() {
         return stack.isEmpty();
     }
 
-    public void push(int value) {
+    public void push(T value) {
         stack.addLast(value);
     }
 
-    public int pop() {
+    public T pop() {
         return stack.removeLast();
     }
 
-    public int peek() {
+    public T peek() {
         return stack.getLast();
     }
 
@@ -29,6 +29,6 @@ public class StackLinkedList {
 
     @Override
     public String toString() {
-        return "Stack: " + stack;
+        return stack.toString();
     }
 }
