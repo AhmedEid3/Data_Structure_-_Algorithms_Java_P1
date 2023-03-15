@@ -2,19 +2,19 @@ package ds;
 
 import java.util.Stack;
 
-public class QueueWithTwoStack {
-    private Stack<Integer> itemsStack1 = new Stack();
-    private Stack<Integer> itemsStack2 = new Stack();
+public class QueueWithTwoStack<T> {
+    private Stack<T> itemsStack1 = new Stack<T>();
+    private Stack<T> itemsStack2 = new Stack<T>();
 
     public boolean isEmpty() {
         return itemsStack1.isEmpty() && itemsStack2.isEmpty();
     }
 
-    public void enqueue(int item) {
+    public void enqueue(T item) {
         itemsStack1.push(item);
     }
 
-    public int dequeue() {
+    public T dequeue() {
         if (isEmpty()) throw new IllegalStateException("Queue is empty");
 
         moveStackOneToStackTwo();
@@ -22,7 +22,7 @@ public class QueueWithTwoStack {
         return itemsStack2.pop();
     }
 
-    public int peek() {
+    public T peek() {
         if (isEmpty()) throw new IllegalStateException("Queue is empty");
 
         moveStackOneToStackTwo();
@@ -36,6 +36,12 @@ public class QueueWithTwoStack {
                 itemsStack2.push(itemsStack1.pop());
             }
         }
+    }
+
+    @Override
+    public String toString() {
+        moveStackOneToStackTwo();
+        return itemsStack2.toString();
     }
 
 }
