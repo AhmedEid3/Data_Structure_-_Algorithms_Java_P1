@@ -93,7 +93,6 @@ public class DynamicArray<T> {
     }
 
     public int size() {
-        System.out.println("length: " + items.length);
         return size;
     }
 
