@@ -1,13 +1,13 @@
 package ds;
 
-public class DoublyLinkedList {
+public class DoublyLinkedList<T> {
     private class Node {
-        private int value;
+        private Object value;
         private Node prev;
         private Node next;
 
-        Node(int value) {
-            this.value = value;
+        Node(T value) {
+            this.value = (T) value;
             this.prev = null;
             this.next = null;
         }
@@ -30,7 +30,7 @@ public class DoublyLinkedList {
         size = 0;
     }
 
-    public boolean contains(int value) {
+    public boolean contains(T value) {
         if (isEmpty()) throwErrorEmpty();
 
         var currentNode = head;
@@ -66,12 +66,12 @@ public class DoublyLinkedList {
         tail = newTail;
     }
 
-    public int getKthFromTheEnd(int k) {
+    public T getKthFromTheEnd(int k) {
         if (isEmpty()) throwErrorEmpty();
 
         var currentNode = tail;
         for (int i = 1; i <= k; i++) {
-            if (i == k) return currentNode.value;
+            if (i == k) return (T) currentNode.value;
             if (currentNode.prev == null)
                 throw new IllegalArgumentException("Kth is greater than size of list.");
             currentNode = currentNode.prev;
@@ -81,19 +81,19 @@ public class DoublyLinkedList {
         throw new IllegalArgumentException("Error Kth is greater than size of list.");
     }
 
-    public int getFirst() {
+    public T getFirst() {
         if (isEmpty()) throwErrorEmpty();
 
-        return head.value;
+        return (T) head.value;
     }
 
-    public int getLast() {
+    public T getLast() {
         if (isEmpty()) throwErrorEmpty();
 
-        return tail.value;
+        return (T) tail.value;
     }
 
-    public Node get(int value) {
+    public Node get(T value) {
         var currentNode = head;
         while (currentNode != null) {
             if (currentNode.value == value) return currentNode;
@@ -103,7 +103,7 @@ public class DoublyLinkedList {
         return null;
     }
 
-    public void addFirst(int value) {
+    public void addFirst(T value) {
         var newNode = new Node(value);
 
         if (isEmpty()) head = tail = newNode;
@@ -115,7 +115,7 @@ public class DoublyLinkedList {
         size++;
     }
 
-    public void addLast(int value) {
+    public void addLast(T value) {
         var newNode = new Node(value);
 
         if (isEmpty()) head = tail = newNode;
@@ -128,7 +128,7 @@ public class DoublyLinkedList {
         size++;
     }
 
-    public void addAt(int value, int indexValue) {
+    public void addAt(T indexValue, T value) {
         if (isEmpty()) throwErrorEmpty();
 
         var atNode = get(indexValue);
@@ -145,10 +145,10 @@ public class DoublyLinkedList {
         size++;
     }
 
-    public int removeFirst() {
+    public T removeFirst() {
         if (isEmpty()) throwErrorEmpty();
 
-        int value = head.value;
+        var value = (T) head.value;
 
         if (isListContainOneItem()) clear();
         else {
@@ -162,10 +162,10 @@ public class DoublyLinkedList {
         return value;
     }
 
-    public int removeLast() {
+    public T removeLast() {
         if (isEmpty()) throwErrorEmpty();
 
-        int value = tail.value;
+        var value = (T) tail.value;
 
         if (isListContainOneItem()) clear();
         else {
@@ -179,13 +179,13 @@ public class DoublyLinkedList {
         return value;
     }
 
-    public int remove(int value) {
+    public T remove(T value) {
         if (isEmpty()) throwErrorEmpty();
 
         var removeNode = get(value);
         if (removeNode == null) throw new IllegalArgumentException("Value not found in list");
 
-        int removeValue = removeNode.value;
+        var removeValue = (T) removeNode.value;
 
         if (head == removeNode) removeFirst();
         else if (tail == removeNode) removeLast();
@@ -204,19 +204,19 @@ public class DoublyLinkedList {
     }
 
 
-    public void setFirst(int value) {
+    public void setFirst(T value) {
         if (isEmpty()) throwErrorEmpty();
 
         head.value = value;
     }
 
-    public void setLast(int value) {
+    public void setLast(T value) {
         if (isEmpty()) throwErrorEmpty();
 
         tail.value = value;
     }
 
-    public void setAt(int value, int indexValue) {
+    public void setAt(T indexValue, T value) {
         if (isEmpty()) throwErrorEmpty();
 
         var setNode = get(indexValue);
@@ -236,12 +236,14 @@ public class DoublyLinkedList {
 
     @Override
     public String toString() {
-        String out = "[";
+        StringBuffer out = new StringBuffer("[");
         var currentNode = head;
         while (currentNode != null) {
-            out = currentNode.next == null ? out + currentNode.value : out + currentNode.value + ", ";
+            out.append(currentNode.value);
+            if (currentNode.next != null) out.append(", ");
             currentNode = currentNode.next;
         }
-        return out + "]";
+
+        return out.append("]").toString();
     }
 }
