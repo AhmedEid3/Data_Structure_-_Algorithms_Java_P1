@@ -1,31 +1,35 @@
 package ds;
 
-public class StackArray {
-    private int[] stack;
+public class StackArray<T> {
+    private Object[] stack;
     private int top = -1;
     private int capacity;
 
     public StackArray(int capacity) {
-        stack = new int[capacity];
+        stack = (T[]) new Object[capacity];
         this.capacity = capacity;
     }
 
-    public void push(int item) {
+    public void push(T item) {
         if (isFull()) throw new IllegalArgumentException("Stack overflow");
 
         stack[++top] = item;
     }
 
-    public int peek() {
+    public T peek() {
         if (isEmpty()) throw new IllegalStateException("Stack is empty");
 
-        return stack[top];
+        return (T) stack[top];
     }
 
-    public int pop() {
+    public T pop() {
         if (isEmpty()) throw new IllegalStateException("Stack is empty");
 
-        return stack[top--];
+        return (T) stack[top--];
+    }
+
+    public int size() {
+        return top + 1;
     }
 
     public boolean isEmpty() {
@@ -44,8 +48,7 @@ public class StackArray {
             out.append(stack[i]);
             if (i < top) out.append(", ");
         }
-        out.append("]");
 
-        return out.toString();
+        return out.append("]").toString();
     }
 }
