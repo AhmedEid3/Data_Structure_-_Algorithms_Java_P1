@@ -2,13 +2,13 @@ package ds;
 
 import java.util.NoSuchElementException;
 
-public class LinkedList {
+public class LinkedList<T> {
     private class Node {
-        private int value;
+        private Object value;
         private Node next;
 
-        public Node(int value) {
-            this.value = value;
+        public Node(T value) {
+            this.value = (T) value;
             this.next = null;
         }
     }
@@ -24,7 +24,7 @@ public class LinkedList {
         return size;
     }
 
-    public void addLast(int item) {
+    public void addLast(T item) {
         var node = new Node(item);
 
         if (isEmpty()) {
@@ -36,7 +36,7 @@ public class LinkedList {
         size++;
     }
 
-    public void addFirst(int item) {
+    public void addFirst(T item) {
         var node = new Node(item);
 
         if (isEmpty()) {
@@ -48,19 +48,19 @@ public class LinkedList {
         size++;
     }
 
-    public int getFirst() {
+    public T getFirst() {
         if (isEmpty()) throw new NoSuchElementException();
 
-        return head.value;
+        return (T) head.value;
     }
 
-    public int getLast() {
+    public T getLast() {
         if (isEmpty()) throw new NoSuchElementException();
 
-        return tail.value;
+        return (T) tail.value;
     }
 
-    public int indexOf(int item) {
+    public int indexOf(T item) {
         var currentNode = head;
         int index = 0;
         while (currentNode != null) {
@@ -68,22 +68,23 @@ public class LinkedList {
             currentNode = currentNode.next;
             index++;
         }
+
         return -1;
     }
 
-    public boolean contains(int item) {
-        int index = indexOf(item);
-        if (index != -1) return true;
+    public boolean contains(T item) {
+        if (indexOf(item) != -1) return true;
+
         return false;
     }
 
-    public int removeFirst() {
+    public T removeFirst() {
         if (isEmpty()) throw new NoSuchElementException();
-        int value = head.value;
+        var value = head.value;
 
         if (head == tail) {
             clear();
-            return value;
+            return (T) value;
         } else {
             var secondNode = head.next;
             head.next = null;
@@ -91,16 +92,16 @@ public class LinkedList {
         }
         size--;
 
-        return value;
+        return (T) value;
     }
 
-    public int removeLast() {
+    public T removeLast() {
         if (isEmpty()) throw new NoSuchElementException();
-        int value = tail.value;
+        var value = tail.value;
 
         if (head == tail) {
             clear();
-            return value;
+            return (T) value;
         } else {
             var previousNode = getPreviousNode(tail);
             tail = previousNode;
@@ -108,11 +109,10 @@ public class LinkedList {
         }
         size--;
 
-        return value;
+        return (T) value;
     }
 
-    public int remove(int value) {
-        // Validations
+    public T remove(T value) {
         if (isEmpty()) throw new IllegalStateException("List is empty");
 
         var removeNode = get(value);
@@ -130,11 +130,10 @@ public class LinkedList {
             size--;
         }
 
-        return removeNode.value;
+        return (T) removeNode.value;
     }
 
     public void reverse() {
-
         var prevNode = head;
         var currentNode = head.next;
 
@@ -148,12 +147,11 @@ public class LinkedList {
         tail = head;
         tail.next = null;
         head = prevNode;
-
     }
 
-    public int getKthFromTheEnd(int k) {
+    public T getKthFromTheEnd(int k) {
         if (k <= 0 || isEmpty()) throw new NoSuchElementException();
-        if (k == 1) return tail.value;
+        if (k == 1) return (T) tail.value;
 
         var firstNode = head;
         var lastNode = head;
@@ -170,13 +168,11 @@ public class LinkedList {
             lastNode = lastNode.next;
         }
 
-        return firstNode.value;
-
-
+        return (T) firstNode.value;
     }
 
-    public int[] toArray() {
-        int[] array = new int[size];
+    public T[] toArray() {
+        Object[] array = new Object[size];
 
         var currentNode = head;
         int index = 0;
@@ -186,18 +182,20 @@ public class LinkedList {
             index++;
         }
 
-        return array;
+        return (T[]) array;
     }
 
     @Override
     public String toString() {
-        String out = "[";
+        StringBuffer out = new StringBuffer("[");
         var currentNode = head;
         while (currentNode != null) {
-            out = currentNode.next == null ? out + currentNode.value : out + currentNode.value + ", ";
+            out.append(currentNode.value);
+            if (currentNode.next != null) out.append(", ");
             currentNode = currentNode.next;
         }
-        return out + "]";
+
+        return out.append("]").toString();
     }
 
 
@@ -211,13 +209,11 @@ public class LinkedList {
         return null;
     }
 
-    private Node get(int value) {
+    private Node get(T value) {
         if (isEmpty()) throw new IllegalStateException("List is empty");
 
-        if (head == tail && head.value == value) return head;
-
         var currentNode = head;
-        while (currentNode != tail) {
+        while (currentNode != null) {
             if (currentNode.value == value) return currentNode;
             currentNode = currentNode.next;
         }

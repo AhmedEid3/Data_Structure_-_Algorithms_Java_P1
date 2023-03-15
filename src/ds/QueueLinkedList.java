@@ -1,7 +1,7 @@
 package ds;
 
 public class QueueLinkedList {
-    private LinkedList queue;
+    private LinkedList<Integer> queue;
 
     public QueueLinkedList() {
         queue = new LinkedList();

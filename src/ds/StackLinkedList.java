@@ -1,7 +1,7 @@
 package ds;
 
 public class StackLinkedList {
-    private LinkedList stack;
+    private LinkedList<Integer> stack;
 
     public StackLinkedList() {
         this.stack = new LinkedList();
