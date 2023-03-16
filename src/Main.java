@@ -1,22 +1,14 @@
-import ds.HashTable;
-import ds.HashTableV2;
+import ds.*;
 
 public class Main {
     public static void main(String[] args) {
-        var list = new HashTableV2();
-        list.put(6, "A");
-        list.put(8, "B");
-        list.put(11, "C");
-        list.put(11, "D");
-        list.put(13, "E");
+        var map = new HashTable<Integer, String>();
 
+        map.put(1, "Ahmed");
+        map.put(11, "Eid");
+        map.put(15, "Mohamed");
 
-        System.out.println(list);
-
-        System.out.println(list.get(13));
-
-        list.remove(13);
-        System.out.println(list);
+        System.out.println(map);
     }
 
 
