@@ -2,102 +2,90 @@ package ds;
 
 import java.util.LinkedList;
 
-public class HashTable {
+public class HashTable<K, V> {
     private class Entry {
-        public int key;
-        public String value;
+        private K key;
+        private V value;
 
-        public Entry(int key, String value) {
+        public Entry(K key, V value) {
             this.key = key;
             this.value = value;
         }
 
         @Override
-        public boolean equals(Object obj) {
-            if (this == obj) return true;
-            if (!(obj instanceof Entry)) return false;
-            var other = (Entry) obj;
-            return this.key == other.key;
+        public String toString() {
+            return key + "=" + value;
         }
 
-        @Override
-        public String toString() {
-            return key + "='" + value + '\'';
-        }
     }
 
     private int size = 5;
+
     private LinkedList<Entry>[] entries = new LinkedList[size];
 
-    public void put(int k, String v) {
-        var bucket = getOrCreateBucket(k);
-
-        var entryIndex = findEntryIndex(k);
-        if (entryIndex > -1) {
-            bucket.remove(entryIndex);
+    public void put(K key, V value) {
+        var entry = getEntry(key);
+        if (entry != null) {
+            entry.value = value;
+            return;
         }
 
-        bucket.addLast(new Entry(k, v));
+        getOrCreateBucket(key).add(new Entry(key, value));
     }
 
-    public String get(int k) {
-        var bucket = getBucket(k);
-        var entryIndex = findEntryIndex(k);
+    public V get(K key) {
+        var entry = getEntry(key);
 
-        return entryIndex > -1 ? bucket.get(entryIndex).value : null;
+        return (entry == null) ? null : entry.value;
     }
 
-    public void remove(int k) {
-        var bucket = getBucket(k);
-        var entryIndex = findEntryIndex(k);
-
-        if (entryIndex == -1) throw new IllegalStateException("key doesn't exist");
-
-        bucket.remove(entryIndex);
+    public void remove(K key) {
+        var entry = getEntry(key);
+        if (entry == null)
+            throw new IllegalStateException();
+        getBucket(key).remove(entry);
     }
 
-    private int hash(int key) {
-        return Math.abs(key) % size;
+    private LinkedList<Entry> getBucket(K key) {
+        return entries[hash(key)];
     }
 
-    private LinkedList<Entry> getBucket(int k) {
-        return entries[hash(k)];
-    }
-
-    private LinkedList<Entry> getOrCreateBucket(int k) {
-        var index = hash(k);
+    private LinkedList<Entry> getOrCreateBucket(K key) {
+        var index = hash(key);
         var bucket = entries[index];
 
         return bucket == null ? entries[index] = new LinkedList<>() : bucket;
     }
 
-    private int findEntryIndex(int k) {
-        var bucket = getBucket(k);
-
+    private Entry getEntry(K key) {
+        var bucket = getBucket(key);
         if (bucket != null) {
-            var indexExistEntry = bucket.indexOf(new Entry(k, ""));
-            if (indexExistEntry > -1) {
-                return indexExistEntry;
+            for (var entry : bucket) {
+                if (entry.key == key)
+                    return entry;
             }
         }
+        return null;
+    }
 
-        return -1;
+    private int hash(K key) {
+        return Math.abs(key.hashCode()) % size;
     }
 
 
     @Override
     public String toString() {
-        String out = "{";
+        StringBuffer output = new StringBuffer("{");
 
         for (int i = 0; i < entries.length; i++) {
             if (entries[i] == null) continue;
 
             var listEntries = entries[i].toArray();
             for (int j = 0; j < listEntries.length; j++) {
-                out += listEntries[j].toString() + ", ";
+                output.append(listEntries[j].toString() + ", ");
             }
         }
 
-        return out + "}";
+        return output.append("}").toString();
     }
 }
